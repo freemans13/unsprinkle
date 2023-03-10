@@ -47,6 +47,7 @@ const Tags = styled.ul`
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  padding: 8px 0;
 `;
 
 const Tag = styled.li`
