@@ -1,11 +1,23 @@
 import React from 'react';
 import styled from 'styled-components/macro';
 
+function sourceSet(filename, extension) {
+  const srcset = [];
+  srcset.push(`${filename}.${extension} 1x`);
+  srcset.push(`${filename}@2x.${extension} 2x`);
+  srcset.push(`${filename}@3x.${extension} 3x`);
+  return srcset;
+}
 const PhotoGridItem = ({ id, src, alt, tags }) => {
+  const filename = src.substring(0, src.lastIndexOf('.'));
   return (
     <article>
       <Anchor href={`/photos/${id}`}>
-        <Image src={src} />
+        <picture>
+          <source type="image/avif" srcset={sourceSet(filename, 'avif')} />
+          <source type="image/jpg" srcset={sourceSet(filename, 'jpg')} />
+          <Image src={src} alt={alt} />
+        </picture>
       </Anchor>
       <Tags>
         {tags.map((tag) => (
@@ -28,12 +40,13 @@ const Image = styled.img`
   height: 300px;
   border-radius: 2px;
   margin-bottom: 8px;
+  object-fit: cover;
 `;
 
 const Tags = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 `;
 
 const Tag = styled.li`
@@ -42,6 +55,9 @@ const Tag = styled.li`
   font-size: 0.875rem;
   font-weight: 475;
   color: var(--color-gray-800);
+
+  display: inline;
+  margin-right: 8px;
 `;
 
 export default PhotoGridItem;
